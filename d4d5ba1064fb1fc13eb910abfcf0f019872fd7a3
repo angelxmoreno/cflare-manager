@@ -1,0 +1,44 @@
+src/config.ts
+  c2d3c692dabd91a0 1-2,6,60,105-154,157-159,166-175
+README.md
+  c2d3c692dabd91a0 39-42,45,59,147-154,172,232-234
+src/commands/tunnelList.ts
+  c2d3c692dabd91a0 9-12
+src/commands/ingressList.ts
+  c2d3c692dabd91a0 9-12
+src/commands/ingressAdd.ts
+  c2d3c692dabd91a0 10-13,25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "d4d5ba1064fb1fc13eb910abfcf0f019872fd7a3",
+  "prompts": {
+    "c2d3c692dabd91a0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019d96ed-1b99-7563-8746-7dee7e74ffad",
+        "model": "gpt-5.3-codex"
+      },
+      "human_author": "Angel S. Moreno",
+      "messages": [],
+      "total_additions": 98,
+      "total_deletions": 12,
+      "accepted_lines": 207,
+      "overriden_lines": 0
+    },
+    "d98da18786446fef": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "a5389bae-fcce-4d0e-834f-7612b170f03f",
+        "model": "gemini-2.5-flash"
+      },
+      "human_author": "Angel S. Moreno",
+      "messages": [],
+      "total_additions": 11,
+      "total_deletions": 0,
+      "accepted_lines": 12,
+      "overriden_lines": 1
+    }
+  }
+}
