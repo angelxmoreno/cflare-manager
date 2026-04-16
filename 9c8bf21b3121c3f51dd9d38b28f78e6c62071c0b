@@ -1,0 +1,38 @@
+README.md
+  c2d3c692dabd91a0 68-76,97-143
+package.json
+  c2d3c692dabd91a0 13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "9c8bf21b3121c3f51dd9d38b28f78e6c62071c0b",
+  "prompts": {
+    "2036936536a0239e": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "43e7990d-f5c0-4048-b5b2-b11839a6e0fe",
+        "model": "gemini-3.1-pro-preview"
+      },
+      "human_author": "Angel S. Moreno",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "c2d3c692dabd91a0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019d96ed-1b99-7563-8746-7dee7e74ffad",
+        "model": "gpt-5.3-codex"
+      },
+      "human_author": "Angel S. Moreno",
+      "messages": [],
+      "total_additions": 57,
+      "total_deletions": 0,
+      "accepted_lines": 161,
+      "overriden_lines": 0
+    }
+  }
+}
