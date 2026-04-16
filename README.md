@@ -36,10 +36,13 @@ bun run prepare
 You can provide values in three layers (highest priority first):
 
 1. CLI flags (`--api-token`, `--account-id`, `--tunnel-id`)
-2. JSON config file (`--config <path>`, or `./config.json` if present)
+2. JSON config files (if `--config` is not set):
+   - `./cfm.config.json` (current working directory)
+   - `<directory of the cfm executable>/cfm.config.json`
+   - `~/.cfm/config.json`
 3. `.env` (`CF_API_TOKEN`, `CF_ACCOUNT_ID`, `CF_TUNNEL_ID`, `CF_ZONE_ID`)
 
-Example `config.json`:
+Example `cfm.config.json`:
 
 ```json
 {
@@ -53,7 +56,7 @@ Example `config.json`:
 You can copy the provided template:
 
 ```bash
-cp config.example.json config.json
+cp config.example.json cfm.config.json
 ```
 
 Optional `.env` fallback:
@@ -141,6 +144,14 @@ If `cfm` is not found, ensure your PATH includes `~/.bun/bin`:
 export PATH="$HOME/.bun/bin:$PATH"
 ```
 
+If you install the compiled binary in a custom PATH directory (for example `~/bin/cfm`), keep shared defaults in:
+
+```text
+~/.cfm/config.json
+```
+
+This lets `cfm` work consistently from any current working directory.
+
 ## Commands
 
 ### `ingress:add`
@@ -158,7 +169,7 @@ Arguments:
 
 Options:
 
-- `--tunnel-id <tunnelId>`: Tunnel UUID to target (required unless provided in `config.json` or `CF_TUNNEL_ID`)
+- `--tunnel-id <tunnelId>`: Tunnel UUID to target (required unless provided in `cfm.config.json`, `~/.cfm/config.json`, or `CF_TUNNEL_ID`)
 - `--api-token <token>`: Override Cloudflare API token
 - `--account-id <id>`: Override Cloudflare account ID
 - `--config <path>`: Use a specific JSON config file
@@ -218,7 +229,9 @@ cfm tunnel:list --config=2719.json
 For `apiToken`, `accountId`, and `tunnelId`, values resolve in this order:
 
 1. Command flags (for example `--api-token`)
-2. JSON config file (`--config <path>` or `./config.json` when present)
+2. JSON config files:
+   - `--config <path>` if provided
+   - otherwise `./cfm.config.json` -> `<executable-dir>/cfm.config.json` -> `~/.cfm/config.json`
 3. Environment variables (`CF_API_TOKEN`, `CF_ACCOUNT_ID`, `CF_TUNNEL_ID`)
 
 If a required value is missing after resolution, the command exits with an explicit error.
