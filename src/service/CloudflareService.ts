@@ -5,9 +5,9 @@ export class CloudflareService {
     protected config: RuntimeConfig;
     protected client: Cloudflare;
 
-    constructor(config: RuntimeConfig) {
+    constructor(config: RuntimeConfig, client?: Cloudflare) {
         this.config = config;
-        this.client = new Cloudflare({ apiToken: config.cloudflare.apiToken });
+        this.client = client ?? new Cloudflare({ apiToken: config.cloudflare.apiToken });
     }
 
     public async listTunnels() {
