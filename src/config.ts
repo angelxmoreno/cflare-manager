@@ -112,13 +112,13 @@ const mergeFileConfig = (base: FileConfig | undefined, incoming: FileConfig | un
 
     return {
         cloudflare: {
-            apiToken: incoming.cloudflare.apiToken ?? base.cloudflare.apiToken,
-            accountId: incoming.cloudflare.accountId ?? base.cloudflare.accountId,
-            zoneId: incoming.cloudflare.zoneId ?? base.cloudflare.zoneId,
-            tunnelId: incoming.cloudflare.tunnelId ?? base.cloudflare.tunnelId,
+            apiToken: base.cloudflare.apiToken ?? incoming.cloudflare.apiToken,
+            accountId: base.cloudflare.accountId ?? incoming.cloudflare.accountId,
+            zoneId: base.cloudflare.zoneId ?? incoming.cloudflare.zoneId,
+            tunnelId: base.cloudflare.tunnelId ?? incoming.cloudflare.tunnelId,
         },
         log: {
-            level: incoming.log.level ?? base.log.level,
+            level: base.log.level ?? incoming.log.level,
         },
     };
 };
