@@ -1,0 +1,34 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "38af3fe36173562a1b51a886553ddc65d60fa39b",
+  "prompts": {
+    "c2d3c692dabd91a0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019d96ed-1b99-7563-8746-7dee7e74ffad",
+        "model": "gpt-5.3-codex"
+      },
+      "human_author": "Angel S. Moreno",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 109,
+      "overriden_lines": 0
+    },
+    "d98da18786446fef": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "a5389bae-fcce-4d0e-834f-7612b170f03f",
+        "model": "gemini-2.5-flash"
+      },
+      "human_author": "Angel S. Moreno",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    }
+  }
+}
