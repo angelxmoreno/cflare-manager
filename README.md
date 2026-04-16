@@ -65,6 +65,15 @@ CF_TUNNEL_ID=your_tunnel_id_here
 CF_ZONE_ID=your_zone_id_here
 ```
 
+Recommended `.env` file permissions:
+
+```bash
+chmod 600 .env
+chown "$USER" .env
+```
+
+This keeps secrets readable only by your user. Also keep `.env` in `.gitignore`.
+
 ### Usage
 
 Run locally:
@@ -83,6 +92,53 @@ Then run:
 
 ```bash
 cfm <command> [options]
+```
+
+### Install Globally
+
+Choose one of these install modes:
+
+1. Development link from this repo (best while iterating):
+
+```bash
+bun link
+cfm --help
+```
+
+2. Global install from this local folder (no manual link step):
+
+```bash
+bun install -g .
+cfm --help
+```
+
+3. Global install from a published package (what you saw in other projects):
+
+```bash
+bun install -g <published-package-name>
+```
+
+This works only after publishing to npm (or another registry). Right now this package is marked `"private": true`, so registry publish/install is intentionally disabled.
+
+### Compile to a Native Binary
+
+Build a standalone binary:
+
+```bash
+bun run build:compile
+```
+
+Install the binary so it can run from anywhere:
+
+```bash
+install -m 755 ./dist/cfm "$HOME/.bun/bin/cfm"
+cfm --help
+```
+
+If `cfm` is not found, ensure your PATH includes `~/.bun/bin`:
+
+```bash
+export PATH="$HOME/.bun/bin:$PATH"
 ```
 
 ## Commands
