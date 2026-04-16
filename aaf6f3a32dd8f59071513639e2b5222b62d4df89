@@ -1,0 +1,25 @@
+tsconfig.json
+  f16913bbd7c448a6 19
+src/config.ts
+  f16913bbd7c448a6 13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "aaf6f3a32dd8f59071513639e2b5222b62d4df89",
+  "prompts": {
+    "f16913bbd7c448a6": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "ff4ae535-a1c6-4317-bddb-d5975200c94a",
+        "model": "gemini-3.1-pro-preview"
+      },
+      "human_author": "Angel S. Moreno",
+      "messages": [],
+      "total_additions": 3,
+      "total_deletions": 2,
+      "accepted_lines": 2,
+      "overriden_lines": 1
+    }
+  }
+}
