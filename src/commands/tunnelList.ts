@@ -6,7 +6,10 @@ import { getLogger } from '../utils/createLogger.ts';
 
 export const tunnelListCmd = new Command('tunnel:list')
     .description('List Cloudflare tunnels')
-    .option('--config <path>', 'Path to JSON config file (defaults to ./config.json when present)')
+    .option(
+        '--config <path>',
+        'Path to JSON config file (default chain: ./cfm.config.json, executable dir, ~/.cfm/config.json)'
+    )
     .option('--api-token <token>', 'Cloudflare API token override')
     .option('--account-id <id>', 'Cloudflare account ID override')
     .action(async (options: RuntimeOptions) => {

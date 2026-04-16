@@ -1,6 +1,9 @@
+import { realpathSync } from 'node:fs';
+import { dirname, join, resolve } from 'node:path';
 import z from 'zod';
 
 const LOG_LEVELS = ['fatal', 'error', 'warn', 'info', 'debug', 'trace'] as const;
+const DEFAULT_CONFIG_FILE = 'cfm.config.json';
 
 const EnvConfigSchema = z
     .object({
@@ -54,6 +57,7 @@ const FileConfigSchema = z
             level: data.logLevel ?? data.log?.level,
         },
     }));
+type FileConfig = z.infer<typeof FileConfigSchema>;
 
 export type Config = z.infer<typeof EnvConfigSchema>;
 export type RuntimeOptions = {
@@ -98,17 +102,77 @@ const readConfigFile = async (configPath: string, required: boolean) => {
     return FileConfigSchema.parse(raw);
 };
 
+const mergeFileConfig = (base: FileConfig | undefined, incoming: FileConfig | undefined): FileConfig | undefined => {
+    if (!base) {
+        return incoming;
+    }
+    if (!incoming) {
+        return base;
+    }
+
+    return {
+        cloudflare: {
+            apiToken: base.cloudflare.apiToken ?? incoming.cloudflare.apiToken,
+            accountId: base.cloudflare.accountId ?? incoming.cloudflare.accountId,
+            zoneId: base.cloudflare.zoneId ?? incoming.cloudflare.zoneId,
+            tunnelId: base.cloudflare.tunnelId ?? incoming.cloudflare.tunnelId,
+        },
+        log: {
+            level: base.log.level ?? incoming.log.level,
+        },
+    };
+};
+
+const getExecutableDir = () => {
+    const executablePath = process.argv[1];
+    if (!executablePath) {
+        return undefined;
+    }
+
+    try {
+        return dirname(realpathSync(executablePath));
+    } catch {
+        return dirname(resolve(executablePath));
+    }
+};
+
+const getDefaultConfigCandidates = () => {
+    const candidates = [resolve(process.cwd(), DEFAULT_CONFIG_FILE)];
+
+    const executableDir = getExecutableDir();
+    if (executableDir) {
+        candidates.push(resolve(executableDir, DEFAULT_CONFIG_FILE));
+    }
+
+    const homeDir = Bun.env.HOME;
+    if (homeDir) {
+        candidates.push(join(homeDir, '.cfm', 'config.json'));
+    }
+
+    return candidates;
+};
+
 const requireValue = (value: string | undefined, key: string, flagName: string) => {
     if (!value) {
-        throw new Error(`Missing required ${key}. Provide ${flagName}, set it in config.json, or export ${key}.`);
+        throw new Error(
+            `Missing required ${key}. Provide ${flagName}, set it in ${DEFAULT_CONFIG_FILE} or ~/.cfm/config.json, or export ${key}.`
+        );
     }
     return value;
 };
 
 export const resolveRuntimeConfig = async (options: RuntimeOptions): Promise<RuntimeConfig> => {
     const env = getConfig();
-    const hasExplicitConfig = Boolean(options.config);
-    const fileConfig = await readConfigFile(options.config ?? 'config.json', hasExplicitConfig);
+    let fileConfig: FileConfig | undefined;
+
+    if (options.config) {
+        fileConfig = await readConfigFile(options.config, true);
+    } else {
+        for (const candidate of getDefaultConfigCandidates()) {
+            const candidateConfig = await readConfigFile(candidate, false);
+            fileConfig = mergeFileConfig(fileConfig, candidateConfig);
+        }
+    }
 
     const apiToken = options.apiToken ?? fileConfig?.cloudflare.apiToken ?? env.cloudflare.apiToken;
     const accountId = options.accountId ?? fileConfig?.cloudflare.accountId ?? env.cloudflare.accountId;

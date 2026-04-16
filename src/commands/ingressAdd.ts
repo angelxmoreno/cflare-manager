@@ -7,7 +7,10 @@ export const ingressAddCmd = new Command('ingress:add')
     .description('Add an ingress route (hostname -> service) to a Cloudflare tunnel')
     .argument('<hostname>', 'Public hostname, e.g. app.example.com')
     .argument('<service>', 'Origin service URL, e.g. http://localhost:3000')
-    .option('--config <path>', 'Path to JSON config file (defaults to ./config.json when present)')
+    .option(
+        '--config <path>',
+        'Path to JSON config file (default chain: ./cfm.config.json, executable dir, ~/.cfm/config.json)'
+    )
     .option('--api-token <token>', 'Cloudflare API token override')
     .option('--account-id <id>', 'Cloudflare account ID override')
     .option('--tunnel-id <tunnelId>', 'Tunnel UUID override')
@@ -19,7 +22,7 @@ export const ingressAddCmd = new Command('ingress:add')
 
         if (!tunnelId) {
             throw new Error(
-                'Missing tunnel ID. Provide --tunnel-id, set tunnelId in config.json, or export CF_TUNNEL_ID.'
+                'Missing tunnel ID. Provide --tunnel-id, set tunnelId in cfm.config.json or ~/.cfm/config.json, or export CF_TUNNEL_ID.'
             );
         }
 
