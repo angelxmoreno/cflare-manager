@@ -10,7 +10,7 @@
 
 ### 2) Config schema over-requires env vars for all commands (Medium)
 - File: `src/config.ts:3`
-- `CF_ZONE_ID` and `CF_ACCOUNT_ID` are required globally, even for flows that may only need `CF_API_TOKEN`.
+- `CF_ZONE_ID` is optional and not required for ingress/tunnel list flows. `CF_ACCOUNT_ID` is enforced at runtime resolution (flags/config/env), not by a strict schema parse of `.env`.
 - Risk: unrelated commands fail at runtime when optional-by-command variables are missing.
 - Fix: split into command-scoped schemas (e.g. `getRouteConfig()`, `getTunnelListConfig()`) or keep a base schema plus per-command refinement.
 

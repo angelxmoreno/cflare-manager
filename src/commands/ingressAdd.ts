@@ -13,7 +13,7 @@ export const ingressAddCmd = new Command('ingress:add')
     .option('--tunnel-id <tunnelId>', 'Tunnel UUID override')
     .action(async (hostname, service, options: RuntimeOptions) => {
         const runtimeConfig = await resolveRuntimeConfig(options);
-        const logger = getLogger();
+        const logger = getLogger(runtimeConfig.log.level);
         const cloudflareService = new CloudflareService(runtimeConfig);
         const tunnelId = options.tunnelId ?? runtimeConfig.cloudflare.tunnelId;
 

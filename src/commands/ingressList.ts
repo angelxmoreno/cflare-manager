@@ -12,7 +12,7 @@ export const ingressListCmd = new Command('ingress:list')
     .option('--tunnel-id <tunnelId>', 'Filter ingress routes by tunnel UUID')
     .action(async (options: RuntimeOptions) => {
         const runtimeConfig = await resolveRuntimeConfig(options);
-        const logger = getLogger();
+        const logger = getLogger(runtimeConfig.log.level);
         const cloudflareService = new CloudflareService(runtimeConfig);
         const routes = await cloudflareService.listTunnelIngressRoutes(
             options.tunnelId ?? runtimeConfig.cloudflare.tunnelId

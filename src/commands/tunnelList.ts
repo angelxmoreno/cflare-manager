@@ -11,11 +11,11 @@ export const tunnelListCmd = new Command('tunnel:list')
     .option('--account-id <id>', 'Cloudflare account ID override')
     .action(async (options: RuntimeOptions) => {
         const runtimeConfig = await resolveRuntimeConfig(options);
-        const logger = getLogger();
+        const logger = getLogger(runtimeConfig.log.level);
         const cloudflareService = new CloudflareService(runtimeConfig);
         const list = await cloudflareService.listTunnels();
 
-        if (!list.result.length) {
+        if (!list.length) {
             logger.info('No tunnels found.');
             return;
         }
@@ -24,7 +24,7 @@ export const tunnelListCmd = new Command('tunnel:list')
             head: ['Tunnel ID', 'Name', 'Status', 'Type', 'Created At'],
         });
 
-        for (const tunnel of list.result) {
+        for (const tunnel of list) {
             table.push([
                 tunnel.id ?? '-',
                 tunnel.name ?? '-',

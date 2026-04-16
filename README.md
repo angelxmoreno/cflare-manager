@@ -70,7 +70,7 @@ CF_ZONE_ID=your_zone_id_here
 Run locally:
 
 ```bash
-bun dev -- <command> [options]
+bun run dev -- <command> [options]
 ```
 
 Link globally:

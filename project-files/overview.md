@@ -4,9 +4,9 @@
 `cf-manager` is a CLI tool (invoked via `cfm`) designed to interact with Cloudflare's API using the official TypeScript SDK. The goal is to provide a streamlined command-line interface for managing Cloudflare resources.
 
 ## Immediate Requirements
-- **Command:** `cfm route:add <name> <target>`
-  - Example: `cfm route:add koko http://localhost:3000`
-  - Purpose: Quickly add routes to Cloudflare.
+- **Command:** `cfm ingress:add <hostname> <service> [--tunnel-id <tunnelId>]`
+  - Example: `cfm ingress:add app.347.buzz http://localhost:3000 --tunnel-id <TUNNEL_UUID>`
+  - Purpose: Quickly add tunnel ingress routes in Cloudflare.
 
 ## Tech Stack
 - **Runtime:** Bun

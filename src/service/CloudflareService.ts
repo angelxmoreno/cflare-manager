@@ -11,42 +11,40 @@ export class CloudflareService {
     }
 
     public async listTunnels() {
-        return this.client.zeroTrust.tunnels.list({
+        const tunnels = [];
+
+        for await (const tunnel of this.client.zeroTrust.tunnels.list({
             account_id: this.config.cloudflare.accountId,
-        });
+        })) {
+            tunnels.push(tunnel);
+        }
+
+        return tunnels;
     }
 
     public async listTunnelIngressRoutes(tunnelId?: string) {
         const tunnels = await this.listTunnels();
-        const selectedTunnels = tunnelId ? tunnels.result.filter((tunnel) => tunnel.id === tunnelId) : tunnels.result;
+        const selectedTunnels = tunnelId ? tunnels.filter((tunnel) => tunnel.id === tunnelId) : tunnels;
+        const routeGroups = await Promise.all(
+            selectedTunnels.map(async (tunnel) => {
+                if (!tunnel.id) {
+                    return [];
+                }
 
-        const routes: Array<{
-            tunnelId: string;
-            tunnelName: string;
-            hostname: string;
-            service: string;
-        }> = [];
+                const config = await this.client.zeroTrust.tunnels.cloudflared.configurations.get(tunnel.id, {
+                    account_id: this.config.cloudflare.accountId,
+                });
 
-        for (const tunnel of selectedTunnels) {
-            if (!tunnel.id) {
-                continue;
-            }
-
-            const config = await this.client.zeroTrust.tunnels.cloudflared.configurations.get(tunnel.id, {
-                account_id: this.config.cloudflare.accountId,
-            });
-
-            for (const ingress of config.config?.ingress ?? []) {
-                routes.push({
-                    tunnelId: tunnel.id,
+                return (config.config?.ingress ?? []).map((ingress) => ({
+                    tunnelId: tunnel.id as string,
                     tunnelName: tunnel.name ?? '-',
                     hostname: ingress.hostname ?? '*',
                     service: ingress.service ?? '-',
-                });
-            }
-        }
+                }));
+            })
+        );
 
-        return routes;
+        return routeGroups.flat();
     }
 
     public async addTunnelIngressRoute(tunnelId: string, hostname: string, service: string) {
